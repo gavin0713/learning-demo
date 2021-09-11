@@ -14,18 +14,19 @@ import java.util.concurrent.ConcurrentHashMap;
  **/
 public class Mediator {
 
-    //用来存储发布的服务的实例(服务调用的路由)
-    public static Map<String , BeanMethod> map=new ConcurrentHashMap<>();
-
+    /**
+     * 用来存储发布的服务的实例(服务调用的路由)
+     */
+    public static Map<String , BeanMethod> map = new ConcurrentHashMap<>();
     private volatile static Mediator instance;
 
-    private Mediator(){};
+    private Mediator(){ };
 
     public static Mediator getInstance(){
-        if(instance==null){
+        if(instance == null){
             synchronized (Mediator.class){
-                if(instance==null){
-                    instance=new Mediator();
+                if(instance == null){
+                    instance = new Mediator();
                 }
             }
         }
@@ -33,18 +34,16 @@ public class Mediator {
     }
 
     public Object processor(RpcRequest request){
-        String key=request.getClassName()+"."+request.getMethodName(); //key
-        BeanMethod beanMethod=map.get(key);
-        if(beanMethod==null){
+        String key = request.getClassName() + "." + request.getMethodName();
+        BeanMethod beanMethod = map.get(key);
+        if(beanMethod == null){
             return null;
         }
-        Object bean=beanMethod.getBean();
-        Method method=beanMethod.getMethod();
+        Object bean = beanMethod.getBean();
+        Method method = beanMethod.getMethod();
         try {
             return method.invoke(bean,request.getArgs());
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;

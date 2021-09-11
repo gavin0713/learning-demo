@@ -23,16 +23,15 @@ public class RpcNetTransport {
     }
 
     public Socket newSocket() throws IOException {
-        Socket socket=new Socket(host,port);
-        return socket;
+        return new Socket(host, port);
     }
 
     public Object send(RpcRequest request){
         try {
-            Socket socket=newSocket();
+            Socket socket = newSocket();
             //IO操作
             try (ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-                 ObjectInputStream inputStream= new ObjectInputStream(socket.getInputStream())) {
+                 ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream())) {
                 outputStream.writeObject(request);
                 outputStream.flush();
                 return inputStream.readObject();

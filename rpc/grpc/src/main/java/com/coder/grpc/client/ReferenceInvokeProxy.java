@@ -20,12 +20,12 @@ public class ReferenceInvokeProxy implements BeanPostProcessor{
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        Field[] fields=bean.getClass().getDeclaredFields();
-        for(Field field:fields){
+        Field[] fields = bean.getClass().getDeclaredFields();
+        for(Field field : fields){
             if(field.isAnnotationPresent(Reference.class)){
                 field.setAccessible(true);
                 //针对这个加了GpReference注解的字段，设置为一个代理的值
-                Object proxy= Proxy.newProxyInstance(field.getType().getClassLoader(),new Class<?>[]{field.getType()},invocationHandler);
+                Object proxy = Proxy.newProxyInstance(field.getType().getClassLoader(),new Class<?>[]{field.getType()},invocationHandler);
                 try {
                     /**
                      * 相当于 bean.setUser(Proxy)

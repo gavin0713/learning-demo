@@ -15,8 +15,9 @@ import java.util.concurrent.Executors;
  * 咕泡学院，只为更好的你
  * 咕泡学院-Mic: 2227324689
  * http://www.gupaoedu.com
+ *
+ * spring 容器启动完成之后，会发布一个ContextRefreshedEvent=
  **/
-//spring 容器启动完成之后，会发布一个ContextRefreshedEvent=
 public class SocketServerInitial implements ApplicationListener<ContextRefreshedEvent>{
     private final ExecutorService executorService= Executors.newCachedThreadPool();
     @Value("${gp.server_port}")
